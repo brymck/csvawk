@@ -10,10 +10,28 @@ getvalues() {
     done
 }
 
+printusage() {
+    print 'usage: csvawk [--help] [--file=progfile] [--source=programtext]'
+    print '       files... [--] [awk arguments...]'
+    print "usage: csvawk [--help] 'program' files..."
+    print
+    print 'Arguments:'
+    print '    -h --help                   show usage'
+    print '    -f --file   <progfile>      program file'
+    print '    -e --source <program-text>  program text'
+    print
+    print 'This will replace fields of the form [name] with the appropriate'
+    print 'field variable in the awk program'
+    exit
+}
+
 # Process command line arguments
 zparseopts -D -K -E -- \
+    h=help           -help=help \
     f+:=progfiles    -file+:=progfiles \
     e+:=programtexts -source+:=programtexts
+
+[[ $# -eq 0 || -n $help ]] && printusage
 
 # Copy everything up to -- into the args array. Everything after that is passed to awk directly.
 for arg in "$@"; do

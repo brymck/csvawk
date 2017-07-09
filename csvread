@@ -2,18 +2,21 @@
 typeset -a columns files
 typeset foundsep last program
 
-zparseopts -D -K -E \
-    h=help -help=help
-
-if [[ $# -eq 0 || -n $help ]]; then
-    print 'usage: csvread [arguments] [columns...] [--] [files...]'
+printusage() {
+    print 'usage: csvread [arguments] columns... file'
+    print 'usage: csvread [arguments] columns... -- files...'
     print
     print 'Arguments:'
-    print '   --         only file names after this'
     print '   -h --help  show usage'
     print
     print 'If -- is not found, the last positional argument is considered a file path'
-fi
+    exit
+}
+
+zparseopts -D -K -E \
+    h=help -help=help
+
+[[ $# -eq 0 || -n $help ]] && printusage
 
 for arg in $@; do
     if [[ $arg == '--' ]]; then
