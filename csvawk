@@ -13,7 +13,7 @@ getvalues() {
 printusage() {
     print 'usage: csvawk [--help] [--file=progfile] [--source=programtext]'
     print '       files... [--] [awk arguments...]'
-    print "usage: csvawk [--help] 'program' files..."
+    print "usage: csvawk [--help] 'program' files... [--] [awk arguments...]"
     print
     print 'Arguments:'
     print '    -h --help                   show usage'
