@@ -1,0 +1,56 @@
+#!/usr/bin/env zsh
+typeset -a args
+typeset src
+
+# zsh builds parameter arrays two items at a time, the first being the flag and the second being the value. This
+# function outputs only the second item.
+getvalues() {
+    for (( i=0; i < ${#1}; i++ )); do
+        (( i % 2 )) && echo $1[$i]
+    done
+}
+
+# Process command line arguments
+zparseopts -D -K -E -- \
+    f+:=progfiles    -file+:=progfiles \
+    e+:=programtexts -source+:=programtexts
+
+# Copy everything up to -- into the args array. Everything after that is passed to awk directly.
+for arg in "$@"; do
+    shift
+    [[ "$arg" == '--' ]] && break
+    args+=("$arg")
+done
+
+# Collect --file and --source options into arrays
+progfiles=("$(getvalues $progfiles)")
+programtexts=("$(getvalues $programtexts)")
+
+# Read --file and --source, and if those don't exist use the first positional argument
+for progfile    in $progfiles;    do src+="$(<$progfile)\n"; done
+for programtext in $programtexts; do src+="$programtext\n";  done
+if [[ ! -n $src ]]; then
+    src+=$args[1]
+    shift args
+fi
+
+# Append BEGIN block to split on commas
+src="BEGIN { FS=\",\"; OFS=\",\" } $src"
+
+isfirst=1
+for file in $args; do
+    # Convert csvawk special notation in source into standard awk program
+    headers=("${(@s/,/)$(csvquote $file | head -1)}")
+    filesource=$src
+    for (( i=0; i <${#headers}; i++ )); do
+        filesource=${filesource//\[$headers[$i]\]/\$$i}
+    done
+
+    # Output and process file content, only reading the first line if it's the first file
+    ( (( isfirst )) && cat $file || tail -n +2 $file ) \
+        | csvquote \
+        | awk ${=@} $filesource \
+        | csvquote -u
+
+    isfirst=0
+done
