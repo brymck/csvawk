@@ -1,2 +1,5 @@
 #!/usr/bin/env zsh
-csvquote $1 | head -1 | tr , "\n"
+csvquote $1 \
+    | head -1 \
+    | tr , "\n" \
+    | csvquote -u
