@@ -36,6 +36,12 @@ Edit a single field and output:
 csvawk 'NR>1 { [foo]="bar" } { print }' file.csv
 ```
 
+Count records matching certain conditions:
+
+```sh
+csvawk '[foo]=="bar" { ++count } END { print count }' file.csv
+```
+
 csvread
 -------
 
