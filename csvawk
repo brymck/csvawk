@@ -11,12 +11,13 @@ getvalues() {
 }
 
 printusage() {
-    print 'usage: csvawk [--help] [--file=progfile] [--source=programtext]'
+    print 'usage: csvawk [--help] [--gawk] [--file=progfile] [--source=programtext]'
     print '       files... [--] [awk arguments...]'
-    print "usage: csvawk [--help] 'program' files... [--] [awk arguments...]"
+    print "usage: csvawk [--help] [--gawk] 'program' files... [--] [awk arguments...]"
     print
     print 'Arguments:'
     print '    -h --help                   show usage'
+    print '    -g --gawk                   use gawk instead of awk'
     print '    -f --file   <progfile>      program file'
     print '    -e --source <program-text>  program text'
     print
@@ -28,6 +29,7 @@ printusage() {
 # Process command line arguments
 zparseopts -D -K -E -- \
     h=help           -help=help \
+    g=gawk           -gawk=gawk \
     f+:=progfiles    -file+:=progfiles \
     e+:=programtexts -source+:=programtexts
 
@@ -39,6 +41,9 @@ for arg in "$@"; do
     [[ "$arg" == '--' ]] && break
     args+=("$arg")
 done
+
+awk=awk
+[[ -n $gawk ]] && awk=gawk
 
 # Collect --file and --source options into arrays
 progfiles=("$(getvalues $progfiles)")
@@ -67,7 +72,7 @@ for file in $args; do
     # Output and process file content, only reading the first line if it's the first file
     ( (( isfirst )) && cat $file || tail -n +2 $file ) \
         | csvquote \
-        | awk ${=@} $filesource \
+        | $awk ${=@} $filesource \
         | csvquote -u
 
     isfirst=0
