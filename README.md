@@ -27,7 +27,7 @@ csvawk '{ print [foo], [bar] }' file.csv
 Output the header and records matching a specific condition:
 
 ```sh
-csvawk 'NR==1 || [foo]=="bar" { print }'
+csvawk 'NR==1 || [foo]=="bar" { print }' file.csv
 ```
 
 Edit a single field and output:
