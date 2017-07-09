@@ -42,6 +42,13 @@ Count records matching certain conditions:
 csvawk '[foo]=="bar" { ++count } END { print count }' file.csv
 ```
 
+Pretty print your program in `gawk` and inspect it:
+
+```sh
+csvawk -g '{ print [foo]  }' file.csv -- --pretty-print
+less awkprof.out
+```
+
 csvread
 -------
 
