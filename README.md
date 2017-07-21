@@ -6,15 +6,15 @@ A collection of command-line utilities for processing CSV files. Obviously.
 Dependencies
 ------------
 
-* GNU awk
+* GNU AWK
 * Perl
 
 csvawk
 ------
 
-This simply passes a CSV file to `awk` in a way that you can
+This simply passes a CSV file to AWK. It lets you:
 
-* Reference the fields in its header as normal `awk` variables (e.g. `$foo`).
+* Reference the fields in its header as normal AWK variables (e.g. `$foo`).
   Note that invalid characters are condensed into an underscore (`_`).
 
 Output specific fields:
