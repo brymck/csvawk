@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-csvquote $1 \
-    | head -1 \
-    | tr , "\n" \
-    | csvquote -u
+#!/bin/sh
+dir="$(dirname "$0")"
+"$dir/csvawk" -f "$dir/lib/csvheaders.awk" "$1"
