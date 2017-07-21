@@ -35,4 +35,4 @@ if [[ -z $files ]]; then
     columns=($columns[1,-2])
 fi
 
-${0:a:h}/csvawk "{ print [${(j:], [:)columns}] }" $files
+${0:a:h}/csvawk "{ print \$${(j:], [:)columns} }" $files
