@@ -3,3 +3,6 @@
 *.tdy
 awkprof.out
 awkvars.out
+Makefile
+MYMETA.json
+MYMETA.yml
