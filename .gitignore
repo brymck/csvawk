@@ -1,3 +1,5 @@
+*.LOG
 *.swp
+*.tdy
 awkprof.out
 awkvars.out

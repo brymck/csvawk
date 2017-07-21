@@ -14,9 +14,9 @@ use Text::CSV_XS;
 
 our $VERSION = '0.0.1';
 
-Readonly my $TEMPORARY_FIELD_SEPARATOR  => "\N{INFORMATION SEPARATOR ONE}";
-Readonly my $TEMPORARY_RECORD_SEPARATOR => "\N{INFORMATION SEPARATOR TWO}";
-Readonly my %SWITCHES_WITH_PARAMETERS   => map { $_ => 1 } qw(
+Readonly my $HIDE_FS                  => "\N{INFORMATION SEPARATOR ONE}";
+Readonly my $HIDE_RS                  => "\N{INFORMATION SEPARATOR TWO}";
+Readonly my %SWITCHES_WITH_PARAMETERS => map { $_ => 1 } qw(
   -f --file
   -F --field-separator
   -v --assign
@@ -48,6 +48,20 @@ sub get_csv_parser {
     );
 
     return $csv;
+}
+
+sub hide_separators {
+    my ($str) = @_;
+    $str =~ s/,/$HIDE_FS/mxsg;
+    $str =~ s/\n/$HIDE_RS/mxsg;
+    return $str;
+}
+
+sub restore_separators {
+    my ($str) = @_;
+    $str =~ s/$HIDE_FS/,/mxsg;
+    $str =~ s/$HIDE_RS/\n/mxsg;
+    return $str;
 }
 
 sub split_arguments {
@@ -107,8 +121,7 @@ sub quote_files {
         open my $in, '<', $in_file;
         while ( my $row = $csv->getline($in) ) {
             for my $field ( @{$row} ) {
-                $field =~ s/,/$TEMPORARY_FIELD_SEPARATOR/mxsge;
-                $field =~ s/\n/$TEMPORARY_RECORD_SEPARATOR/mxsge;
+                $field = hide_separators($field);
             }
             $csv->print( $out, $row );
         }
@@ -165,8 +178,13 @@ sub main {
     );
     #>>>
 
-    exec @command
-      or print {*STDERR} "couldn't execute command: $OS_ERROR";
+    open my $output, q(-|), @command;
+    while ( my $row = <$output> ) {
+        print restore_separators($row);
+    }
+    close $output;
+
+    return 0;
 }
 
 exit main();
