@@ -1,18 +1,7 @@
-CSV Command Line Utilities
-==========================
+CSVAWK
+======
 
-A collection of command-line utilities for processing CSV files. Obviously.
-
-Dependencies
-------------
-
-* GNU AWK
-* Perl
-
-csvawk
-------
-
-This simply passes a CSV file to AWK. It lets you:
+This simply passes a CSV file to AWK with a Perl wrapper. It lets you:
 
 * Reference the fields in its header as normal AWK variables (e.g. `$foo`).
   Note that invalid characters are condensed into an underscore (`_`).
@@ -48,26 +37,8 @@ csvawk -g '{ print $foo }' file.csv -- --pretty-print
 less awkprof.out
 ```
 
-csvread
--------
-
-Read specific columns from a file:
+List headers, one per line:
 
 ```sh
-csvread foo bar file.csv
-```
-
-Read specific columns from a set of files:
-
-```sh
-csvread foo bar -- file1.csv file2.csv
-```
-
-csvheaders
-----------
-
-Dump the headers of a CSV file, one per line:
-
-```sh
-csvheaders file.csv
+csvawk 'NR == 1 { for (i = 1; i <= NF; i++) print $i }' file.csv
 ```
