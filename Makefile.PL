@@ -7,6 +7,10 @@ WriteMakefile(
     LICENSE      => 'MIT',
     AUTHOR       => 'Bryan McKelvey <bryan.mckelvey@gmail.com>',
     EXE_FILES    => ['bin/csvawk'],
+    PREREQ_PM    => {
+        'Readonly'     => 0,
+        'Text::CSV_XS' => 0,
+    },
     dist         => {
         COMPRESS => 'gzip',
         SUFFIX   => 'gz',
