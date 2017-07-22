@@ -1,3 +1,6 @@
+[Documentation::RequirePodSections]
+lib_sections = NAME | SYNOPSIS | DESCRIPTION | AUTHOR | COPYRIGHT
+
 [InputOutput::RequireCheckedSyscalls]
 functions = :builtins
 exclude_functions = print

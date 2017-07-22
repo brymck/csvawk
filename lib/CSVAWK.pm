@@ -191,3 +191,50 @@ sub csvawk {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+CSVAWK - Pass CSV files to AWK.
+
+
+=head1 SYNOPSIS
+
+Given a CSV file that can't be parsed naively
+
+  a,b,"c,d",e
+  1,2,3,"4
+  5"
+  6,7,8,9
+
+the command
+
+  csvawk '$a == 1 { print $b, $c_d }' quux.csv
+
+will return
+
+  2,3
+
+
+=head1 DESCRIPTION
+
+CSVAWK allows processing CSV files to AWK via a (relatively) thin Perl wrapper.
+
+
+=head1 AUTHOR
+
+Bryan McKelvey <bryan.mckelvey@gmail.com>
+
+
+=head1 COPYRIGHT
+
+Copyright (c) 2017 Bryan McKelvey.  All rights reserved.
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.  The full text of this license
+can be found in the LICENSE file included with this module
+
+=cut
