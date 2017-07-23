@@ -8,3 +8,5 @@
 *.tdy
 
 /.build/
+/CSVAWK*
+
