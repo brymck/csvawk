@@ -14,7 +14,7 @@ use Text::CSV_XS;
 use base 'Exporter';
 our @EXPORT_OK = qw(csvawk);
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 Readonly my $HIDE_FS                  => "\N{INFORMATION SEPARATOR ONE}";
 Readonly my $HIDE_RS                  => "\N{INFORMATION SEPARATOR TWO}";
