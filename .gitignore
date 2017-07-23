@@ -1,4 +1,3 @@
-CSVAWK*/*
 *.bak
 *.LOG
 *.swp
@@ -8,12 +7,4 @@ CSVAWK*/*
 /MYMETA.*
 *.tdy
 
-# ExtUtils::MakeMaker
-/blib/
-/*.gz
-/Makefile
-/Makefile.old
-/MANIFEST
-/MANIFEST.bak
-/pm_to_blib
-/*.zip
+/.build/
